@@ -1,6 +1,5 @@
 print('salve')
 
-
 name = 'pedro'
 age = 18
 

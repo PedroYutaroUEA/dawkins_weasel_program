@@ -1,38 +1,30 @@
-import random
-import string
+import re
+
+still_playing = 'y'
+target_phrase = 'methinks it is like a weasel'
+generation = 0
 
 
-def print_hi(user_name):
-    print(f'Hi, {user_name}')
+def reproduction(phrase_ref):
+    hundred_phrase = [list(phrase_ref) for _ in range(100)]
+    return hundred_phrase
 
 
-if __name__ == '__main__':
-    print_hi('PyCharm')
+while still_playing == 'y':
+    phrase = str(input("Set a phrase with 28 chars (space is included as a char): ")).lower()
+    is_invalid = bool(re.search(r'[^a-z\s]', phrase))
+    while len(phrase) != 28 or is_invalid:
+        phrase = str(input(f"The phrase must contains 28 letter chars (you typed {phrase}): ")).lower()
+        is_invalid = bool(re.search(r'[^a-z\s]', phrase))
 
-name = 'pedro'
-age = 18
+    if phrase == target_phrase and generation == 0:
+        print(f'The phrase you typed is exactly what this program should try ({phrase})! :O')
+    else:
+        print(reproduction(phrase))
 
-if age >= 18:
-    print(f'{name} é maior de idade')
-else:
-    print(f'{name} é menor de idade')
+    still_playing = str(input('Wanna play again (Y/N)?: ')).lower()
+    while still_playing not in ('Y', 'y', 'N', 'n'):
+        print(f"Invalid response (you typed '{still_playing}')")
+        still_playing = str(input('Wanna play again (Y/N)?: ')).lower()
 
-
-def reproduction(phrase):
-    words = list(phrase)
-    words_cp100 = [words for i in range(100)]
-    return words_cp100
-
-def mutation(rep_result):
-    for result in rep_result:
-        for char in result:
-            probability = random.random()
-            condition = probability == 1
-            char = random.choice(string.ascii_lowercase) if condition else char
-
-phrase = str(input("Set a phrase with 10 char: ")).lower()
-while len(phrase) != 10:
-    phrase = str(input("Please, set a phrase with 10 char: ")).lower()
-
-rep_result = reproduction(phrase)
-print(mutation(rep_result))
+print('Thanks for playing! :)')

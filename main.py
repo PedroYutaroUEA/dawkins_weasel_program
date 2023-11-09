@@ -5,8 +5,9 @@ letters = 'abcdefghijklmnopqrstuvwxyz '  # DEFINES LETTERS TO BE EXCHANGED
 still_playing = 'y'
 target_phrase = 'methinks it is like a weasel'
 generation = 0
-pontuation = 0
-phrase_pontuation = {}
+score = 0
+phrase_score = {}
+
 
 # THIS CREATE 100 COPIES OF THE PHRASE_REF
 
@@ -20,24 +21,26 @@ def reproduction(phrase_ref):
 
 def mutation(sentence):
     global target_phrase  # GLOBAL IS USED TO TURN THE VARIABLES USABLE IN ALL CODE
-    global pontuation
+    global score
     global generation
-    global phrase_pontuation
-    for c in range(100):
-        pontuation = 0
-        for w in range(28):
+    global phrase_score
+    for child in range(100):
+        score = 0
+        for char in range(28):
             word_rand = random.choice(letters)
-            if w == 0:
-                sentence = word_rand + sentence[1:]
-            if 1 < w < 28:
-                sentence = sentence[0:w] + word_rand + sentence[w + 1:]
+            # first char
+            if char == 0:
+                sentence = str(word_rand + sentence[1:])
+            if 1 <= char < 28:
+                sentence = str(sentence[0:char] + word_rand + sentence[char + 1:])
+            # last char
             else:
-                sentence = sentence[0:w] + word_rand
+                sentence = str(sentence[0:char] + word_rand)
             generation += 1
-            if word_rand == target_phrase[w]:
-                pontuation += 1
-        alocator = sentence
-        phrase_pontuation[alocator] = pontuation
+            if word_rand == target_phrase[char]:
+                score += 1
+        allocator = sentence
+        phrase_score[allocator] = score, generation
         return sentence
 
 
@@ -63,7 +66,6 @@ while still_playing == 'y':
 
     else:
         print(reproduction(phrase))
-
     # ASK IF THE USER WANTS TO PLAY AGAIN
 
     still_playing = str(input('Wanna play again (Y/N)?: ')).lower()

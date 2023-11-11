@@ -6,65 +6,64 @@ still_playing = 'y'
 target_phrase = 'methinks it is like a weasel'
 generation = 0
 score = 0
-phrase_score = {}
-
+best_score = 0
+candidate = ""
 
 # THIS CREATE 100 COPIES OF THE PHRASE_REF
 
-
 def reproduction(phrase_ref):
     hundred_phrase = [list(phrase_ref) for _ in range(100)]
-    return hundred_phrase
+    mutation(hundred_phrase)
 
 # MUTATES THE PHRASE
 
-
 def mutation(sentence):
     global target_phrase  # GLOBAL IS USED TO TURN THE VARIABLES USABLE IN ALL CODE
-    global score
-    global generation
-    global phrase_score
-    for child in range(100):
-        score = 0
-        for char in range(28):
+    x = 0
+    for phrases in sentence:
+        y = 0
+        for _ in phrases:
             word_rand = random.choice(letters)
-            # first char
-            if char == 0:
-                sentence = str(word_rand + sentence[1:])
-            if 1 <= char < 28:
-                sentence = str(sentence[0:char] + word_rand + sentence[char + 1:])
-            # last char
-            else:
-                sentence = str(sentence[0:char] + word_rand)
-            generation += 1
-            if word_rand == target_phrase[char]:
+            if random.randint(1, 100) <= 5: # Has a 5% to mutate a letter
+                sentence[x][y] = word_rand
+            y += 1
+        x += 1
+
+    selection(sentence)
+
+# Can't use "phrases" nor "_" to manipulate "sentence" in line 27, since they are not int type variables
+# Use "print(type(nameOfVariable))" to identify the type of variable
+
+# SELECTS THE PHRASE USED FOR THE NEXT GENERATION
+
+def selection(candidates):
+    global score
+    global best_score
+    global generation
+    global candidate
+    for phrases in candidates:
+        score = position = 0 # Resets to 0
+        for char in phrases: # Compares if the phrases have the same char at the same position of "target_phrase"
+            if char == target_phrase[position]:
                 score += 1
-        allocator = sentence
-        phrase_score[allocator] = score, generation
-        return sentence
+            position += 1
+        if score > best_score: # Used to select the best candidate
+            best_score = score
+            candidate = ''.join(phrases)
+    print("Generation "+str(generation)+": "+candidate+" - Score "+str(best_score))
+    if best_score == 28:
+        print("Simulation ended")
+    else:
+        generation += 1
+        reproduction(candidate)
 
-
-# THIS START DE 'INPUT PHASE'
+# THIS START THE 'INPUT PHASE'
 
 while still_playing == 'y':
     phrase = str(input("Set a phrase with 28 chars (space is included as a char): ")).lower()
     is_invalid = bool(re.search(r'[^a-z\s]', phrase))
 
     # THIS RESTART DE INPUT IF THE USER DONT COMPLY WITH THE REQUIREMENT
-
-still_playing = 'y'
-target_phrase = 'methinks it is like a weasel'
-generation = 0
-
-
-def reproduction(phrase_ref):
-    hundred_phrase = [list(phrase_ref) for _ in range(100)]
-    return hundred_phrase
-
-
-while still_playing == 'y':
-    phrase = str(input("Set a phrase with 28 chars (space is included as a char): ")).lower()
-    is_invalid = bool(re.search(r'[^a-z\s]', phrase))
 
     while len(phrase) != 28 or is_invalid:
         phrase = str(input(f"The phrase must contains 28 letter chars (you typed {phrase}): ")).lower()
@@ -78,14 +77,11 @@ while still_playing == 'y':
     # THIS PRINT 100 COPIES OF USER'S INPUT
 
     else:
-        print(reproduction(phrase))
+        generation = score = best_score = 0 # Resets everything to 0
+        candidate = ""
+        reproduction(phrase)
+
     # ASK IF THE USER WANTS TO PLAY AGAIN
-
-    if phrase == target_phrase and generation == 0:
-        print(f'The phrase you typed is exactly what this program should try ({phrase})! :O')
-    else:
-        print(reproduction(phrase))
-
 
     still_playing = str(input('Wanna play again (Y/N)?: ')).lower()
     while still_playing not in ('Y', 'y', 'N', 'n'):

@@ -10,25 +10,34 @@ best_score = 0
 candidate = ""
 
 
-# THIS CREATE 100 COPIES OF THE PHRASE_REF
+# REGEX AND SIZE VERIFICATION
+def validation(target, phrase_ref):
+    reg_violation = bool(re.search(r'[^a-z0-9\s]', target) or re.search(r'[^a-z0-9\s]', phrase_ref))
+    diff_size = bool(len(target) != len(phrase_ref))
+    return reg_violation or diff_size
+
+
+# THIS CREATE 100 COPIES OF THE PHRASE_REF AND FORCES THAT phrases_ref IS NOT NULL
 def reproduction(phrase_ref):
-    hundred_phrase = [list(phrase_ref) for _ in range(100)]
-    mutation(hundred_phrase)
+    if len(phrase_ref) > 0:
+        hundred_phrase = [list(phrase_ref) for _ in range(100)]
+        mutation(hundred_phrase)
+    else:
+        mutation([list(phrase) for _ in range(100)])
 
 
 # MUTATES THE PHRASE
 def mutation(sentence):
     global target_phrase
-    x = 0
+    p = 0
     for phrases in sentence:
-        y = 0
+        c = 0
         for _ in phrases:
             word_rand = random.choice(letters)
             if random.randint(1, 100) <= 5:  # Has a 5% to mutate a letter
-                sentence[x][y] = word_rand
-            y += 1
-        x += 1
-
+                sentence[p][c] = word_rand
+            c += 1
+        p += 1
     selection(sentence)
 
 
@@ -36,7 +45,7 @@ def mutation(sentence):
 # Use "print(type(nameOfVariable))" to identify the type of variable
 
 
-# SELECTS THE PHRASE USED FOR THE NEXT GENERATION
+# SELECTS THE PHRASE USED FOR THE NEXT GENERATION AND ENSURE THAT candidate EXISTS
 def selection(candidates):
     global score
     global best_score
@@ -51,12 +60,14 @@ def selection(candidates):
         if score > best_score:  # Used to select the best candidate
             best_score = score
             candidate = ''.join(phrases)
-    print("Generation " + str(generation) + ": " + candidate + " - Score " + str(best_score))
+    if len(candidate) > 0:
+        print("Generation " + str(generation) + ": " + candidate + " - Score " + str(best_score))
     if best_score == len(target_phrase):
         print("========== SIMULATION ENDED! ==========")
         print(f"Best generation: Nº{generation}")
     else:
-        generation += 1
+        if len(candidate) > 0:
+            generation += 1
         reproduction(candidate)
 
 
@@ -64,16 +75,13 @@ def selection(candidates):
 while still_playing == 'y':
     target_phrase = str(input("Set the target phrase: ")).lower()
     phrase = str(input(f"Set a phrase with {len(target_phrase)} chars (space is included as a char): ")).lower()
-    is_target_invalid = bool(re.search(r'[^a-z0-9\s]', target_phrase))
-    is_phrase_invalid = bool(re.search(r'[^a-z0-9\s]', phrase))
 
     # THIS RESTART DE INPUT IF THE USER DONT COMPLY WITH THE REGEX REQUIREMENT
-    while is_target_invalid or is_phrase_invalid or len(phrase) != len(target_phrase):
+    while validation(target_phrase, phrase):
         print(f"Both phrases must match [a-z0-9] regex and length (target: {target_phrase}, phrase: {phrase})")
         target_phrase = str(input("Set the target phrase: ")).lower()
         phrase = str(input(f"Set a phrase with {len(target_phrase)} chars (space is included as a char): ")).lower()
-        is_target_invalid = bool(re.search(r'[^a-z0-9\s]', target_phrase))
-        is_phrase_invalid = bool(re.search(r'[^a-z0-9\s]', phrase))
+        validation(target_phrase, phrase)
 
     # THIS CHECK IF THE USER INPUT IS EQUAL TO THE KEY-PHRASE
     if phrase == target_phrase and generation == 0:
@@ -81,9 +89,9 @@ while still_playing == 'y':
 
     # THIS PRINT 100 COPIES OF USER'S INPUT
     else:
+        reproduction(phrase)
         generation = score = best_score = 0  # Resets everything to 0
         candidate = ""
-        reproduction(phrase)
 
     # ASK IF THE USER WANTS TO PLAY AGAIN
     still_playing = str(input('Wanna play again (Y/N)?: ')).lower()

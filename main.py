@@ -41,10 +41,6 @@ def mutation(sentence):
     selection(sentence)
 
 
-# Can't use "phrases" nor "_" to manipulate "sentence" in line 27, since they are not int type variables
-# Use "print(type(nameOfVariable))" to identify the type of variable
-
-
 # SELECTS THE PHRASE USED FOR THE NEXT GENERATION AND ENSURE THAT candidate EXISTS
 def selection(candidates):
     global score

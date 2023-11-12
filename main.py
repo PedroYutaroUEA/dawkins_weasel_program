@@ -1,7 +1,7 @@
 import random
 import re
 
-letters = 'abcdefghijklmnopqrstuvwxyz1234567890 '  # DEFINES LETTERS TO BE EXCHANGED
+POSSIBLE_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890 '  # DEFINES LETTERS TO BE EXCHANGED
 still_playing = 'y'
 target_phrase = ''
 generation = 0
@@ -17,7 +17,7 @@ def validation(target, phrase_ref):
     return reg_violation or diff_size
 
 
-# THIS CREATE 100 COPIES OF THE PHRASE_REF AND FORCES THAT phrases_ref IS NOT NULL
+# THIS CREATE 100 COPIES OF THE PHRASE_REF
 def reproduction(phrase_ref):
     if len(phrase_ref) > 0:
         hundred_phrase = [list(phrase_ref) for _ in range(100)]
@@ -33,7 +33,7 @@ def mutation(sentence):
     for phrases in sentence:
         c = 0
         for _ in phrases:
-            word_rand = random.choice(letters)
+            word_rand = random.choice(POSSIBLE_CHARS)
             if random.randint(1, 100) <= 5:  # Has a 5% to mutate a letter
                 sentence[p][c] = word_rand
             c += 1
@@ -41,7 +41,7 @@ def mutation(sentence):
     selection(sentence)
 
 
-# SELECTS THE PHRASE USED FOR THE NEXT GENERATION AND ENSURE THAT candidate EXISTS
+# SELECTS THE PHRASE USED FOR THE NEXT GENERATION
 def selection(candidates):
     global score
     global best_score

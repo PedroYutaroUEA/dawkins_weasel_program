@@ -17,7 +17,7 @@ def validation(target, phrase_ref):
     return reg_violation or diff_size
 
 
-# THIS CREATE 100 COPIES OF THE PHRASE_REF
+# THIS CREATE 100 COPIES OF THE PHRASE_REF AND FORCES THAT phrases_ref IS NOT NULL
 def reproduction(phrase_ref):
     if len(phrase_ref) > 0:
         hundred_phrase = [list(phrase_ref) for _ in range(100)]
@@ -38,7 +38,6 @@ def mutation(sentence):
                 sentence[p][c] = word_rand
             c += 1
         p += 1
-
     selection(sentence)
 
 
@@ -46,7 +45,7 @@ def mutation(sentence):
 # Use "print(type(nameOfVariable))" to identify the type of variable
 
 
-# SELECTS THE PHRASE USED FOR THE NEXT GENERATION
+# SELECTS THE PHRASE USED FOR THE NEXT GENERATION AND ENSURE THAT candidate EXISTS
 def selection(candidates):
     global score
     global best_score

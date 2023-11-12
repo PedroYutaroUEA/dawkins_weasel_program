@@ -1,7 +1,7 @@
 import random
 import re
 
-POSSIBLE_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890 '  # DEFINES LETTERS TO BE EXCHANGED
+POSSIBLE_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890 '
 still_playing = 'y'
 target_phrase = ''
 generation = 0
@@ -28,7 +28,6 @@ def reproduction(phrase_ref):
 
 # MUTATES THE PHRASE
 def mutation(sentence):
-    global target_phrase
     p = 0
     for phrases in sentence:
         c = 0

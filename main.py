@@ -1,13 +1,14 @@
 import random
 import re
 
-POSSIBLE_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890 '
+POSSIBLE_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890 '  # DEFINES LETTERS TO BE EXCHANGED
 still_playing = 'y'
 target_phrase = ''
 generation = 0
 score = 0
 best_score = 0
 candidate = ""
+accuracy = 0
 
 
 # REGEX AND SIZE VERIFICATION
@@ -42,10 +43,7 @@ def mutation(sentence):
 
 # SELECTS THE PHRASE USED FOR THE NEXT GENERATION
 def selection(candidates):
-    global score
-    global best_score
-    global generation
-    global candidate
+    global score, best_score, generation, candidate, accuracy
     for phrases in candidates:
         score = position = 0  # Resets to 0
         for char in phrases:  # Compares if the phrases have the same char at the same position of "target_phrase"
@@ -55,8 +53,9 @@ def selection(candidates):
         if score > best_score:  # Used to select the best candidate
             best_score = score
             candidate = ''.join(phrases)
+            accuracy = (score / len(target_phrase)) * 100
     if len(candidate) > 0:
-        print("Generation " + str(generation) + ": " + candidate + " - Score " + str(best_score))
+        print(f"Generation {str(generation)}: {candidate} - Score {str(best_score)} | Accuracy: {accuracy:.2f}%")
     if best_score == len(target_phrase):
         print("========== SIMULATION ENDED! ==========")
         print(f"Best generation: Nº{generation}")
@@ -86,7 +85,6 @@ while still_playing == 'y':
     else:
         reproduction(phrase)
         generation = score = best_score = 0  # Resets everything to 0
-        candidate = ""
 
     # ASK IF THE USER WANTS TO PLAY AGAIN
     still_playing = str(input('Wanna play again (Y/N)?: ')).lower()

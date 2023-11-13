@@ -85,6 +85,7 @@ while still_playing == 'y':
     else:
         reproduction(phrase)
         generation = score = best_score = 0  # Resets everything to 0
+        candidate = ''
 
     # ASK IF THE USER WANTS TO PLAY AGAIN
     still_playing = str(input('Wanna play again (Y/N)?: ')).lower()

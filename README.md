@@ -16,11 +16,11 @@ To run the Weasel terminal based program, follow these steps:.
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/PedroYutaroUEA/Dawkins_Weasel_Program.git
+   git clone https://github.com/PedroYutaroUEA/dawkins_weasel_program.git
 2. Navigate to the project directory:
    
    ```bash
-   cd dawkins-weasel
+   cd dawkins_weasel_program
 3. Run the program
 
   ```bash

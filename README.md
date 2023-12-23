@@ -1,6 +1,6 @@
 # Dawkins' Weasel Program
 
-### Introduction
+## Introduction
 
 This repository contains an implementation of Richard Dawkins' Weasel program. The Weasel program is a famous example used by Dawkins in his book "The Blind Watchmaker" to illustrate the concept of cumulative selection in the process of evolution.
 

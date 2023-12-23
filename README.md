@@ -10,7 +10,7 @@ The Weasel program simulates the process of natural selection by evolving a targ
 
 ## How to Run
 
-First of all, ensure that you have Python version 3.12.0 or above instaled on your machine.
+First of all, ensure that you have Python version 3.12.0 or above installed on your machine.
 To run the Weasel terminal based program, follow these steps:.
 
 1. Clone the repository:
@@ -24,4 +24,4 @@ To run the Weasel terminal based program, follow these steps:.
 3. Run the program
 
   ```bash
-   python weasel.py
+  python weasel.py

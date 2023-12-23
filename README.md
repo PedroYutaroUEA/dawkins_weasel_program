@@ -24,4 +24,4 @@ To run the Weasel terminal based program, follow these steps:.
 3. Run the program
 
   ```bash
-  python weasel.py
+   python weasel.py
